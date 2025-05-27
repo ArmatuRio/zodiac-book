@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гороскоп: 12 Знаків Зодіаку</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+
+/* Style the video: 100% width and height to cover the entire window */
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .zodiac-card {
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .zodiac-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .prediction-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .prediction-tab:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .active-tab {
+            background-color: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+        
+        .modal-content {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .zodiac-icon {
+            animation: pulse 2s infinite;
+        }
+    
+  </style>
+
+
+</head>
+<body class="bg-gradient-to-b from-indigo-900 to-purple-900 min-h-screen text-white font-sans">
+<video autoplay muted loop id="myVideo">
+  <source src="1medium.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-pulse">✨ Гороскоп ✨</h1>
+            <p class="text-xl text-purple-200">Дізнайтеся, що зірки приготували для вас</p>
+        </header>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Овен -->
+            <div class="zodiac-card bg-gradient-to-br  rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('oven')" style="animation-delay: 0.1s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♈</div>
+                    <h3 class="text-2xl font-bold mb-2">Овен</h3>
+                    <p class="text-center text-red-100">(21 березня - 19 квітня)</p>
+                </div>
+            </div>
+            
+            <!-- Телець -->
+            <div class="zodiac-card bg-gradient-to-br from-green-600 to-green-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('telec')" style="animation-delay: 0.2s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♉</div>
+                    <h3 class="text-2xl font-bold mb-2">Телець</h3>
+                    <p class="text-center text-green-100">(20 квітня - 20 травня)</p>
+                </div>
+            </div>
+            
+            <!-- Близнюки -->
+            <div class="zodiac-card bg-gradient-to-br from-yellow-600 to-yellow-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('blyznyky')" style="animation-delay: 0.3s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♊</div>
+                    <h3 class="text-2xl font-bold mb-2">Близнюки</h3>
+                    <p class="text-center text-yellow-100">(21 травня - 20 червня)</p>
+                </div>
+            </div>
+            
+            <!-- Рак -->
+            <div class="zodiac-card bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('rak')" style="animation-delay: 0.4s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♋</div>
+                    <h3 class="text-2xl font-bold mb-2">Рак</h3>
+                    <p class="text-center text-blue-100">(21 червня - 22 липня)</p>
+                </div>
+            </div>
+            
+            <!-- Лев -->
+            <div class="zodiac-card bg-gradient-to-br from-orange-600 to-orange-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('lev')" style="animation-delay: 0.5s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♌</div>
+                    <h3 class="text-2xl font-bold mb-2">Лев</h3>
+                    <p class="text-center text-orange-100">(23 липня - 22 серпня)</p>
+                </div>
+            </div>
+            
+            <!-- Діва -->
+            <div class="zodiac-card bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('diva')" style="animation-delay: 0.6s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♍</div>
+                    <h3 class="text-2xl font-bold mb-2">Діва</h3>
+                    <p class="text-center text-emerald-100">(23 серпня - 22 вересня)</p>
+                </div>
+            </div>
+            
+            <!-- Терези -->
+            <div class="zodiac-card bg-gradient-to-br from-pink-600 to-pink-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('terezy')" style="animation-delay: 0.7s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♎</div>
+                    <h3 class="text-2xl font-bold mb-2">Терези</h3>
+                    <p class="text-center text-pink-100">(23 вересня - 22 жовтня)</p>
+                </div>
+            </div>
+            
+            <!-- Скорпіон -->
+            <div class="zodiac-card bg-gradient-to-br from-red-800 to-red-900 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('skorpion')" style="animation-delay: 0.8s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♏</div>
+                    <h3 class="text-2xl font-bold mb-2">Скорпіон</h3>
+                    <p class="text-center text-red-100">(23 жовтня - 21 листопада)</p>
+                </div>
+            </div>
+            
+            <!-- Стрілець -->
+            <div class="zodiac-card bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('strilec')" style="animation-delay: 0.9s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♐</div>
+                    <h3 class="text-2xl font-bold mb-2">Стрілець</h3>
+                    <p class="text-center text-purple-100">(22 листопада - 21 грудня)</p>
+                </div>
+            </div>
+            
+            <!-- Козеріг -->
+            <div class="zodiac-card bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('kozerig')" style="animation-delay: 1.0s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♑</div>
+                    <h3 class="text-2xl font-bold mb-2">Козеріг</h3>
+                    <p class="text-center text-gray-100">(22 грудня - 19 січня)</p>
+                </div>
+            </div>
+            
+            <!-- Водолій -->
+            <div class="zodiac-card bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('vodoliy')" style="animation-delay: 1.1s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♒</div>
+                    <h3 class="text-2xl font-bold mb-2">Водолій</h3>
+                    <p class="text-center text-blue-100">(20 січня - 18 лютого)</p>
+                </div>
+            </div>
+            
+            <!-- Риби -->
+            <div class="zodiac-card bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-xl p-6 shadow-xl cursor-pointer" onclick="showPrediction('ryby')" style="animation-delay: 1.2s">
+                <div class="flex flex-col items-center">
+                    <div class="zodiac-icon text-5xl mb-4">♓</div>
+                    <h3 class="text-2xl font-bold mb-2">Риби</h3>
+                    <p class="text-center text-indigo-100">(19 лютого - 20 березня)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальне вікно для прогнозів -->
+    <div id="predictionModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="modal-content bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="zodiacName" class="text-2xl font-bold"></h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div class="flex mb-6 border-b border-gray-600">
+                <div class="prediction-tab py-2 px-4 cursor-pointer active-tab" onclick="changeTab('day')">
+                    <i class="fas fa-sun mr-2"></i>День
+                </div>
+                <div class="prediction-tab py-2 px-4 cursor-pointer" onclick="changeTab('week')">
+                    <i class="fas fa-calendar-week mr-2"></i>Тиждень
+                </div>
+                <div class="prediction-tab py-2 px-4 cursor-pointer" onclick="changeTab('month')">
+                    <i class="fas fa-calendar-alt mr-2"></i>Місяць
+                </div>
+            </div>
+            
+            <div id="dayPrediction" class="prediction-content">
+                <p class="text-gray-300">Завантаження прогнозу...</p>
+            </div>
+            
+            <div id="weekPrediction" class="prediction-content hidden">
+                <p class="text-gray-300">Завантаження прогнозу...</p>
+            </div>
+            
+            <div id="monthPrediction" class="prediction-content hidden">
+                <p class="text-gray-300">Завантаження прогнозу...</p>
+            </div>
+            
+            <div class="mt-6 text-center text-sm text-gray-400">
+                <i class="fas fa-info-circle mr-2"></i>Прогнози оновлюються щодня
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Дані про знаки зодіаку
+        const zodiacData = {
+            oven: {
+                name: "Овен ♈",
+                description: "Овен - перший знак зодіаку, символізує початок і енергію. Люди, народжені під цим знаком, зазвичай активні, ініціативні та сміливі. Вони люблять бути першими і часто беруть на себе роль лідера.",
+                predictions: {
+                    day: "Сьогодні Овен може відчувати приплив енергії. Ідеальний день для початку нових проектів. Будьте обережні зі своїми словами - можливі конфлікти через вашу прямоту.",
+                    week: "На цьому тижні зірки радять зосередитись на кар'єрних питаннях. Можливі несподівані пропозиції. У особистих стосунках варто проявити більше терпіння.",
+                    month: "Цей місяць принесе Овнам багато можливостей для розвитку. Важливо не розпорошувати енергію, а зосередитись на головних цілях. Фінансове становище покращиться, особливо в другій половині місяця."
+                }
+            },
+            telec: {
+                name: "Телець ♉",
+                description: "Телець - знак землі, що символізує стабільність і надійність. Люди цього знаку зазвичай практичні, терплячі і люблять комфорт. Вони вміють цінувати прекрасне і часто мають гарний смак.",
+                predictions: {
+                    day: "Сьогодні Тельці можуть відчувати потребу у фінансовій стабільності. Добрий день для планування бюджету. Увечері варто приділити час собі та своїм потребам.",
+                    week: "Тиждень буде сприятливим для Тельців у фінансовому плані. Можливі приємні сюрпризи. У стосунках важливо бути чесним із собою та партнером.",
+                    month: "Цей місяць принесе Тельцям відчуття стабільності. Добрий час для інвестицій у нерухомість або довгострокові проекти. У творчих справах можливі значні успіхи."
+                }
+            },
+            blyznyky: {
+                name: "Близнюки ♊",
+                description: "Близнюки - знак повітря, що символізує спілкування і адаптивність. Люди цього знаку зазвичай комунікабельні, допитливі і багатогранні. Вони швидко навчаються і легко адаптуються до нових умов.",
+                predictions: {
+                    day: "Сьогодні Близнюки будуть особливо енергійними. Добрий день для спілкування та нових знайомств. Можливі несподівані новини, які змінять ваші плани.",
+                    week: "На цьому тижні варто зосередитись на навчанні та обміні інформацією. Можливі короткі поїздки. У стосунках важливо бути відвертим - уникніть двозначностей.",
+                    month: "Цей місяць буде для Близнюків часом інтенсивного спілкування. Можливі нові проекти, пов'язані з медіа або письменництвом. Важливо знайти баланс між роботою та відпочинком."
+                }
+            },
+            rak: {
+                name: "Рак ♋",
+                description: "Рак - знак води, що символізує емоції і інтуїцію. Люди цього знаку зазвичай чутливі, турботливі і сильно прив'язані до сім'ї. Вони мають гарну інтуїцію і часто керуються почуттями.",
+                predictions: {
+                    day: "Сьогодні Раки можуть відчувати себе особливо емоційними. Добрий день для спілкування з близькими. Варто приділити увагу домашнім справам.",
+                    week: "На цьому тижні Раки будуть особливо чутливими до оточення. Важливо створити комфортну атмосферу вдома. У фінансових питаннях варто бути обережним.",
+                    month: "Цей місяць принесе Ракам можливість поглибити особисті стосунки. Добрий час для сімейних справ та вирішення давніх питань. Інтуїція буде особливо сильною."
+                }
+            },
+            lev: {
+                name: "Лев ♌",
+                description: "Лев - знак вогню, що символізує творчість і лідерство. Люди цього знаку зазвичай харизматичні, щирі і люблять бути в центрі уваги. Вони мають сильну волю і часто є натхненниками для інших.",
+                predictions: {
+                    day: "Сьогодні Леви будуть у центрі уваги. Добрий день для творчих проектів і публічних виступів. Не соромтеся показати свої таланти - вас оцінять по достоїнству.",
+                    week: "На цьому тижні Леви будуть особливо енергійними. Можливі приємні знайомства та соціальні події. У фінансових питаннях варто бути розсудливим.",
+                    month: "Цей місяць принесе Левам можливість проявити себе в творчих справах. Добрий час для старту нових проектів. У особистих стосунках можливі гарячі дискусії."
+                }
+            },
+            diva: {
+                name: "Діва ♍",
+                description: "Діва - знак землі, що символізує аналіз і практичність. Люди цього знаку зазвичай деталізовані, організовані і прагнуть до досконалості. Вони мають гарні аналітичні здібності і люблять допомагати іншим.",
+                predictions: {
+                    day: "Сьогодні Діви будуть особливо уважними до деталей. Добрий день для планування та аналізу. Варто приділити увагу здоров'ю - можливі дрібні нездужання.",
+                    week: "На цьому тижні Діви зможуть ефективно вирішувати складні завдання. Можливі корисні знайомства у професійному колі. Важливо знайти час для відпочинку.",
+                    month: "Цей місяць буде для Дів часом продуктивної роботи. Добрий період для підвищення кваліфікації. У стосунках варто бути менш критичним до партнера."
+                }
+            },
+            terezy: {
+                name: "Терези ♎",
+                description: "Терези - знак повітря, що символізує гармонію і справедливість. Люди цього знаку зазвичай тактовні, дипломатичні і прагнуть до рівноваги. Вони мають гарний смак і часто виступають посередниками в конфліктах.",
+                predictions: {
+                    day: "Сьогодні Терези будуть прагнути гармонії у всьому. Добрий день для вирішення конфліктів і прийняття важливих рішень. Варто приділити увагу своїм потребам.",
+                    week: "На цьому тижні Терези зможуть знайти баланс між роботою та особистим життям. Можливі приємні зустрічі з друзями. У фінансових питаннях варто бути обережним.",
+                    month: "Цей місяць принесе Терезам можливість покращити стосунки з близькими. Добрий час для творчих проектів і самовираження. Важливо не відкладати важливі рішення."
+                }
+            },
+            skorpion: {
+                name: "Скорпіон ♏",
+                description: "Скорпіон - знак води, що символізує трансформацію і глибину. Люди цього знаку зазвичай інтенсивні, проникливі і мають сильну волю. Вони часто йдуть до суті речей і не бояться змін.",
+                predictions: {
+                    day: "Сьогодні Скорпіони можуть відчувати особливу енергію. Добрий день для вирішення складних питань. Важливо контролювати свої емоції - можливі спалахи.",
+                    week: "На цьому тижні Скорпіони зможуть досягти значних результатів у важливих справах. Можливі несподівані повороти подій. У стосунках варто бути відвертим.",
+                    month: "Цей місяць принесе Скорпіонам глибокі внутрішні зміни. Добрий час для завершення старих справ і початку нового етапу. Фінансове становище може покращитися."
+                }
+            },
+            strilec: {
+                name: "Стрілець ♐",
+                description: "Стрілець - знак вогню, що символізує пригоди і філософію. Люди цього знаку зазвичай оптимістичні, прямі і люблять свободу. Вони часто шукають сенс життя і люблять подорожі.",
+                predictions: {
+                    day: "Сьогодні Стрільці будуть особливо активними. Добрий день для початку нових проектів і знайомств. Можливі несподівані пропозиції - будьте відкриті до нового.",
+                    week: "На цьому тижні Стрільці зможуть знайти відповіді на важливі питання. Можливі короткі поїздки або навчання. У стосунках варто бути чесним і відвертим.",
+                    month: "Цей місяць буде для Стрільців часом розширення горизонтів. Добрий період для міжнародних справ і подорожей. Важливо збалансувати енергію між роботою та відпочинком."
+                }
+            },
+            kozerig: {
+                name: "Козеріг ♑",
+                description: "Козеріг - знак землі, що символізує амбіції і дисципліну. Люди цього знаку зазвичай відповідальні, терплячі і прагнуть до успіху. Вони мають гарні організаторські здібності і вміють досягати цілей.",
+                predictions: {
+                    day: "Сьогодні Козероги будуть особливо прагматичними. Добрий день для роботи та планування довгострокових цілей. Варто приділити увагу кар'єрним питанням.",
+                    week: "На цьому тижні Козероги зможуть досягти значних результатів у професійній сфері. Можливі корисні знайомства. У стосунках варто проявити більше тепла.",
+                    month: "Цей місяць принесе Козерогам можливість просунутися по кар'єрних сходах. Добрий час для фінансового планування. Важливо знайти час для сім'ї та близьких."
+                }
+            },
+            vodoliy: {
+                name: "Водолій ♒",
+                description: "Водолій - знак повітря, що символізує інновації і гуманізм. Люди цього знаку зазвичай оригінальні, незалежні і мають широкий кругозір. Вони часто йдуть проти течії і цінують свободу.",
+                predictions: {
+                    day: "Сьогодні Водолії будуть особливо креативними. Добрий день для нестандартних рішень і соціальних активностей. Можливі несподівані знайомства.",
+                    week: "На цьому тижні Водолії зможуть реалізувати свої незвичайні ідеї. Можливі зустрічі з однодумцями. У фінансових питаннях варто бути обережним.",
+                    month: "Цей місяць буде для Водоліїв часом соціальної активності. Добрий період для участі в групових проектах. Важливо знайти баланс між роботою та особистим життям."
+                }
+            },
+            ryby: {
+                name: "Риби ♓",
+                description: "Риби - знак води, що символізує чуттєвість і духовність. Люди цього знаку зазвичай співчутливі, інтуїтивні і мають багату уяву. Вони часто живуть у своєму внутрішньому світі і мають творчі здібності.",
+                predictions: {
+                    day: "Сьогодні Риби будуть особливо чутливими. Добрий день для творчості і духовних практик. Варто приділити увагу своїм почуттям і інтуїції.",
+                    week: "На цьому тижні Риби зможуть знайти внутрішній баланс. Можливі приємні творчі досягнення. У стосунках варто бути відвертим із партнером.",
+                    month: "Цей місяць принесе Рибам глибокі внутрішні відкриття. Добрий час для медитації і самопізнання. Важливо не занурюватися занадто глибоко у свої думки."
+                }
+            }
+        };
+        
+        let currentZodiac = '';
+        
+        // Показати модальне вікно з прогнозом
+        function showPrediction(zodiac) {
+            currentZodiac = zodiac;
+            const modal = document.getElementById('predictionModal');
+            const zodiacInfo = zodiacData[zodiac];
+            
+            document.getElementById('zodiacName').textContent = zodiacInfo.name;
+            document.getElementById('dayPrediction').innerHTML = `<p class="text-gray-300">${zodiacInfo.predictions.day}</p>`;
+            document.getElementById('weekPrediction').innerHTML = `<p class="text-gray-300">${zodiacInfo.predictions.week}</p>`;
+            document.getElementById('monthPrediction').innerHTML = `<p class="text-gray-300">${zodiacInfo.predictions.month}</p>`;
+            
+            // Скинути активні вкладки
+            document.querySelectorAll('.prediction-tab').forEach(tab => {
+                tab.classList.remove('active-tab');
+            });
+            document.querySelector('.prediction-tab').classList.add('active-tab');
+            
+            // Показати тільки прогноз на день
+            document.querySelectorAll('.prediction-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('dayPrediction').classList.remove('hidden');
+            
+            modal.classList.remove('hidden');
+        }
+        
+        // Закрити модальне вікно
+        function closeModal() {
+            document.getElementById('predictionModal').classList.add('hidden');
+        }
+        
+        // Змінити вкладку (день/тиждень/місяць)
+        function changeTab(tab) {
+            // Оновити активні вкладки
+            document.querySelectorAll('.prediction-tab').forEach(t => {
+                t.classList.remove('active-tab');
+            });
+            event.target.classList.add('active-tab');
+            
+            // Показати відповідний контент
+            document.querySelectorAll('.prediction-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tab}Prediction`).classList.remove('hidden');
+        }
+        
+        // Закрити модальне вікно при кліку поза ним
+        window.onclick = function(event) {
+            const modal = document.getElementById('predictionModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
