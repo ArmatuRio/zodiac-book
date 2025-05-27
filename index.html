@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Гороскоп: 12 Знаків Зодіаку</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .zodiac-card {
+      animation: fadeIn 0.5s ease-out forwards;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .zodiac-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .zodiac-icon {
+      animation: pulse 2s infinite;
+      color: #10B981; /* Зеленый цвет для иконок */
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); /* Свечение */
+    }
+    #myVideo {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+    }
+    .video-placeholder {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -2;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .video-placeholder i {
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .modal-content {
+      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .loading-spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid #10B981; /* Зеленый цвет для спиннера */
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-indigo-900 to-purple-800 text-white min-h-screen">
+  <!-- Video placeholder (shown while video loads) -->
+  <div class="video-placeholder" id="videoPlaceholder">
+    <i class="fas fa-spinner fa-spin"></i>
+  </div>
+
+  <!-- Background video -->
+  <video autoplay muted loop id="myVideo" oncanplay="hidePlaceholder()">
+    <source src="1medium.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="text-center relative py-12">
+      <div class="flex justify-center items-center relative">
+        <h1 id="headerTitle" class="text-4xl md:text-5xl font-bold mb-6 animate-pulse">✨ Гороскоп ✨</h1>
+        <button id="langToggle" class="absolute right-0 bg-black bg-opacity-30 text-white px-3 py-2 rounded-md cursor-pointer hover:bg-opacity-50 transition" onclick="toggleLanguage()">
+          EN
+        </button>
+      </div>
+      <p id="headerSubtitle" class="text-xl text-purple-300">Дізнайтеся, що зірки приготували для вас</p>
+      <p id="lastUpdated" class="text-sm text-gray-400 mt-2"></p>
+    </header>
+
+    <!-- Main content -->
+    <main>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Aries -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('aries')" 
+             style="animation-delay: 0.1s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♈</div>
+          <h3 id="aries-name" class="text-2xl font-semibold mb-1">Овен ♈</h3>
+          <p id="aries-period" class="text-sm">(21 березня - 19 квітня)</p>
+        </div>
+        
+        <!-- Taurus -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('taurus')" 
+             style="animation-delay: 0.2s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♉</div>
+          <h3 id="taurus-name" class="text-2xl font-semibold mb-1">Телець ♉</h3>
+          <p id="taurus-period" class="text-sm">(20 квітня - 20 травня)</p>
+        </div>
+        
+        <!-- Gemini -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('gemini')" 
+             style="animation-delay: 0.3s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♊</div>
+          <h3 id="gemini-name" class="text-2xl font-semibold mb-1">Близнюки ♊</h3>
+          <p id="gemini-period" class="text-sm">(21 травня - 20 червня)</p>
+        </div>
+        
+        <!-- Cancer -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('cancer')" 
+             style="animation-delay: 0.4s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♋</div>
+          <h3 id="cancer-name" class="text-2xl font-semibold mb-1">Рак ♋</h3>
+          <p id="cancer-period" class="text-sm">(21 червня - 22 липня)</p>
+        </div>
+        
+        <!-- Leo -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('leo')" 
+             style="animation-delay: 0.5s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♌</div>
+          <h3 id="leo-name" class="text-2xl font-semibold mb-1">Лев ♌</h3>
+          <p id="leo-period" class="text-sm">(23 липня - 22 серпня)</p>
+        </div>
+        
+        <!-- Virgo -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('virgo')" 
+             style="animation-delay: 0.6s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♍</div>
+          <h3 id="virgo-name" class="text-2xl font-semibold mb-1">Діва ♍</h3>
+          <p id="virgo-period" class="text-sm">(23 серпня - 22 вересня)</p>
+        </div>
+        
+        <!-- Libra -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('libra')" 
+             style="animation-delay: 0.7s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♎</div>
+          <h3 id="libra-name" class="text-2xl font-semibold mb-1">Терези ♎</h3>
+          <p id="libra-period" class="text-sm">(23 вересня - 22 жовтня)</p>
+        </div>
+        
+        <!-- Scorpio -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('scorpio')" 
+             style="animation-delay: 0.8s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♏</div>
+          <h3 id="scorpio-name" class="text-2xl font-semibold mb-1">Скорпіон ♏</h3>
+          <p id="scorpio-period" class="text-sm">(23 жовтня - 21 листопада)</p>
+        </div>
+        
+        <!-- Sagittarius -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('sagittarius')" 
+             style="animation-delay: 0.9s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♐</div>
+          <h3 id="sagittarius-name" class="text-2xl font-semibold mb-1">Стрілець ♐</h3>
+          <p id="sagittarius-period" class="text-sm">(22 листопада - 21 грудня)</p>
+        </div>
+        
+        <!-- Capricorn -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('capricorn')" 
+             style="animation-delay: 1.0s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♑</div>
+          <h3 id="capricorn-name" class="text-2xl font-semibold mb-1">Козеріг ♑</h3>
+          <p id="capricorn-period" class="text-sm">(22 грудня - 19 січня)</p>
+        </div>
+        
+        <!-- Aquarius -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('aquarius')" 
+             style="animation-delay: 1.1s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♒</div>
+          <h3 id="aquarius-name" class="text-2xl font-semibold mb-1">Водолій ♒</h3>
+          <p id="aquarius-period" class="text-sm">(20 січня - 18 лютого)</p>
+        </div>
+        
+        <!-- Pisces -->
+        <div class="zodiac-card rounded-xl p-6 shadow-lg cursor-pointer" 
+             onclick="showPrediction('pisces')" 
+             style="animation-delay: 1.2s;">
+          <div class="zodiac-icon text-5xl mb-4 text-green-500">♓</div>
+          <h3 id="pisces-name" class="text-2xl font-semibold mb-1">Риби ♓</h3>
+          <p id="pisces-period" class="text-sm">(19 лютого - 20 березня)</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="predictionModal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center">
+    <div class="modal-content rounded-xl p-6 w-full max-w-md mx-4 shadow-xl animate-fadeIn">
+      <div class="flex justify-between items-center mb-6">
+        <h2 id="modalZodiacName" class="text-2xl font-bold"></h2>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-white text-3xl focus:outline-none">&times;</button>
+      </div>
+      
+      <div class="flex border-b border-gray-600 mb-6">
+        <div id="dayTab" class="flex-1 text-center py-3 cursor-pointer border-b-2 border-white font-medium" onclick="changeTab('day')">
+          <i class="fas fa-sun mr-2"></i><span id="dayTabText">День</span>
+        </div>
+        <div id="weekTab" class="flex-1 text-center py-3 cursor-pointer text-gray-400 hover:text-white transition" onclick="changeTab('week')">
+          <i class="fas fa-calendar-week mr-2"></i><span id="weekTabText">Тиждень</span>
+        </div>
+        <div id="monthTab" class="flex-1 text-center py-3 cursor-pointer text-gray-400 hover:text-white transition" onclick="changeTab('month')">
+          <i class="fas fa-calendar-alt mr-2"></i><span id="monthTabText">Місяць</span>
+        </div>
+      </div>
+      
+      <div id="dayPrediction" class="prediction-content">
+        <div id="dayLoading" class="loading-spinner"></div>
+        <p id="predDayText" class="text-gray-200 hidden"></p>
+      </div>
+      <div id="weekPrediction" class="prediction-content hidden">
+        <div id="weekLoading" class="loading-spinner"></div>
+        <p id="predWeekText" class="text-gray-200 hidden"></p>
+      </div>
+      <div id="monthPrediction" class="prediction-content hidden">
+        <div id="monthLoading" class="loading-spinner"></div>
+        <p id="predMonthText" class="text-gray-200 hidden"></p>
+      </div>
+      
+      <div class="text-center text-sm text-gray-400 mt-6">
+        <i class="fas fa-info-circle mr-2"></i><span id="modalFooterText">Прогнози оновлюються щодня</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = "uk";
+    let horoscopeData = {};
+    let lastUpdated = null;
+
+    const uiText = {
+      headerTitle: {
+        uk: "✨ Гороскоп ✨",
+        en: "✨ Horoscope ✨"
+      },
+      headerSubtitle: {
+        uk: "Дізнайтеся, що зірки приготували для вас",
+        en: "Discover what the stars have prepared for you"
+      },
+      tabs: {
+        day: { uk: "День", en: "Day" },
+        week: { uk: "Тиждень", en: "Week" },
+        month: { uk: "Місяць", en: "Month" }
+      },
+      loading: {
+        uk: "Завантаження прогнозу...",
+        en: "Loading prediction..."
+      },
+      footer: {
+        uk: "Прогнози оновлюються щодня",
+        en: "Predictions are updated daily"
+      },
+      updated: {
+        uk: "Останнє оновлення: ",
+        en: "Last updated: "
+      }
+    };
+
+    const zodiacData = {
+      aries: {
+        uk: { name: "Овен ♈", period: "(21 березня - 19 квітня)" },
+        en: { name: "Aries ♈", period: "(Mar 21 - Apr 19)" }
+      },
+      taurus: {
+        uk: { name: "Телець ♉", period: "(20 квітня - 20 травня)" },
+        en: { name: "Taurus ♉", period: "(Apr 20 - May 20)" }
+      },
+      gemini: {
+        uk: { name: "Близнюки ♊", period: "(21 травня - 20 червня)" },
+        en: { name: "Gemini ♊", period: "(May 21 - Jun 20)" }
+      },
+      cancer: {
+        uk: { name: "Рак ♋", period: "(21 червня - 22 липня)" },
+        en: { name: "Cancer ♋", period: "(Jun 21 - Jul 22)" }
+      },
+      leo: {
+        uk: { name: "Лев ♌", period: "(23 липня - 22 серпня)" },
+        en: { name: "Leo ♌", period: "(Jul 23 - Aug 22)" }
+      },
+      virgo: {
+        uk: { name: "Діва ♍", period: "(23 серпня - 22 вересня)" },
+        en: { name: "Virgo ♍", period: "(Aug 23 - Sep 22)" }
+      },
+      libra: {
+        uk: { name: "Терези ♎", period: "(23 вересня - 22 жовтня)" },
+        en: { name: "Libra ♎", period: "(Sep 23 - Oct 22)" }
+      },
+      scorpio: {
+        uk: { name: "Скорпіон ♏", period: "(23 жовтня - 21 листопада)" },
+        en: { name: "Scorpio ♏", period: "(Oct 23 - Nov 21)" }
+      },
+      sagittarius: {
+        uk: { name: "Стрілець ♐", period: "(22 листопада - 21 грудня)" },
+        en: { name: "Sagittarius ♐", period: "(Nov 22 - Dec 21)" }
+      },
+      capricorn: {
+        uk: { name: "Козеріг ♑", period: "(22 грудня - 19 січня)" },
+        en: { name: "Capricorn ♑", period: "(Dec 22 - Jan 19)" }
+      },
+      aquarius: {
+        uk: { name: "Водолій ♒", period: "(20 січня - 18 лютого)" },
+        en: { name: "Aquarius ♒", period: "(Jan 20 - Feb 18)" }
+      },
+      pisces: {
+        uk: { name: "Риби ♓", period: "(19 лютого - 20 березня)" },
+        en: { name: "Pisces ♓", period: "(Feb 19 - Mar 20)" }
+      }
+    };
+
+    // Function to fetch horoscope data from API
+    async function fetchHoroscope(sign, timeframe) {
+      try {
+        // Using Aztro API (free horoscope API)
+        const response = await fetch(`https://aztro.sameerkumar.website/?sign=${sign}&day=${timeframe}`, {
+          method: 'POST'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching horoscope:', error);
+        return null;
+      }
+    }
+
+    // Function to get all horoscope data
+    async function getAllHoroscopes() {
+      const timeframes = ['today', 'week', 'month'];
+      const signs = Object.keys(zodiacData);
+      
+      for (const sign of signs) {
+        horoscopeData[sign] = {};
+        
+        for (const timeframe of timeframes) {
+          const data = await fetchHoroscope(sign, timeframe);
+          if (data) {
+            horoscopeData[sign][timeframe] = data;
+          } else {
+            // Fallback data if API fails
+            horoscopeData[sign][timeframe] = {
+              description: getFallbackPrediction(sign, timeframe, currentLang),
+              compatibility: "",
+              mood: "",
+              color: "",
+              lucky_number: "",
+              lucky_time: ""
+            };
+          }
+        }
+      }
+      
+      lastUpdated = new Date();
+      updateLastUpdatedText();
+      console.log('All horoscope data loaded:', horoscopeData);
+    }
+
+    // Fallback predictions if API fails
+    function getFallbackPrediction(sign, timeframe, lang) {
+      const timeKey = timeframe === 'today' ? 'day' : timeframe;
+      
+      if (lang === 'uk') {
+        const predictions = {
+          aries: {
+            day: "Сьогодні Овен може відчувати приплив енергії. Ідеальний день для нових починань.",
+            week: "Цього тижня зірки радять зосередитись на кар'єрі та особистому розвитку.",
+            month: "Цей місяць принесе можливості для зростання та нових відкриттів."
+          },
+          taurus: {
+            day: "Сьогодні Телець може відчувати потребу в спокої та стабільності.",
+            week: "Цього тижня варто приділити увагу фінансовим питанням.",
+            month: "Цей місяць принесе можливості для інвестицій та зростання."
+          },
+          gemini: {
+            day: "Сьогодні Близнюки можуть відчувати бажання спілкування.",
+            week: "Цього тижня зірки обіцяють цікаві знайомства.",
+            month: "Цей місяць буде сприятливим для навчання."
+          },
+          cancer: {
+            day: "Сьогодні Раку варто прислухатися до своїх емоцій.",
+            week: "Цього тижня важливо дбати про домашній затишок.",
+            month: "Цей місяць буде сприятливим для родинних відносин."
+          },
+          leo: {
+            day: "Сьогодні Лев може відчувати приплив творчої енергії.",
+            week: "Цього тижня варто проявити лідерські якості.",
+            month: "Цей місяць принесе визнання ваших досягнень."
+          },
+          virgo: {
+            day: "Сьогодні Діві варто зосередитись на деталях.",
+            week: "Цього тижня буде вдалий час для планування.",
+            month: "Цей місяць принесе можливості для професійного зростання."
+          },
+          libra: {
+            day: "Сьогодні Терезям важливо знайти баланс.",
+            week: "Цього тижня варто уникати конфліктів.",
+            month: "Цей місяць буде сприятливим для партнерських відносин."
+          },
+          scorpio: {
+            day: "Сьогодні Скорпіону варто довіряти своїй інтуїції.",
+            week: "Цього тижня можуть відкритись таємниці.",
+            month: "Цей місяць принесе глибокі особисті відкриття."
+          },
+          sagittarius: {
+            day: "Сьогодні Стрільцю варто шукати нові пригоди.",
+            week: "Цього тижня буде вдалий час для подорожей.",
+            month: "Цей місяць принесе розширення горизонтів."
+          },
+          capricorn: {
+            day: "Сьогодні Козерігу варто зосередитись на цілях.",
+            week: "Цього тижня буде вдалий час для кар'єрного зростання.",
+            month: "Цей місяць принесе стабільність і успіх."
+          },
+          aquarius: {
+            day: "Сьогодні Водолію варто діяти нестандартно.",
+            week: "Цього тижня можуть з'явитись несподівані можливості.",
+            month: "Цей місяць принесе інноваційні ідеї."
+          },
+          pisces: {
+            day: "Сьогодні Рибам варто прислухатись до своєї інтуїції.",
+            week: "Цього тижня буде сприятливий час для творчості.",
+            month: "Цей місяць принесе духовне зростання."
+          }
+        };
+        return predictions[sign][timeKey];
+      } else {
+        const predictions = {
+          aries: {
+            day: "Today, Aries may feel a surge of energy. A perfect day for new beginnings.",
+            week: "This week, the stars advise focusing on your career and personal growth.",
+            month: "This month will bring opportunities for growth and new discoveries."
+          },
+          taurus: {
+            day: "Today, Taurus may feel the need for calm and stability.",
+            week: "This week, focus on your finances and stability.",
+            month: "This month will bring opportunities for investments and growth."
+          },
+          gemini: {
+            day: "Today, Gemini may feel the desire to communicate.",
+            week: "This week, the stars promise interesting acquaintances.",
+            month: "This month will be favorable for learning."
+          },
+          cancer: {
+            day: "Today, Cancer should listen to their emotions.",
+            week: "This week it's important to take care of home comfort.",
+            month: "This month will be favorable for family relationships."
+          },
+          leo: {
+            day: "Today, Leo may feel a surge of creative energy.",
+            week: "This week it's worth showing leadership qualities.",
+            month: "This month will bring recognition of your achievements."
+          },
+          virgo: {
+            day: "Today, Virgo should focus on details.",
+            week: "This week will be a good time for planning.",
+            month: "This month will bring opportunities for professional growth."
+          },
+          libra: {
+            day: "Today, Libra needs to find balance.",
+            week: "This week it's worth avoiding conflicts.",
+            month: "This month will be favorable for partnerships."
+          },
+          scorpio: {
+            day: "Today, Scorpio should trust their intuition.",
+            week: "This week secrets may be revealed.",
+            month: "This month will bring deep personal discoveries."
+          },
+          sagittarius: {
+            day: "Today, Sagittarius should look for new adventures.",
+            week: "This week will be a good time for travel.",
+            month: "This month will bring broadening of horizons."
+          },
+          capricorn: {
+            day: "Today, Capricorn should focus on goals.",
+            week: "This week will be a good time for career growth.",
+            month: "This month will bring stability and success."
+          },
+          aquarius: {
+            day: "Today, Aquarius should act unconventionally.",
+            week: "This week unexpected opportunities may appear.",
+            month: "This month will bring innovative ideas."
+          },
+          pisces: {
+            day: "Today, Pisces should listen to their intuition.",
+            week: "This week will be favorable for creativity.",
+            month: "This month will bring spiritual growth."
+          }
+        };
+        return predictions[sign][timeKey];
+      }
+    }
+
+    function hidePlaceholder() {
+      document.getElementById('videoPlaceholder').style.display = 'none';
+    }
+
+    function updateUI() {
+      // Header
+      document.getElementById("headerTitle").textContent = uiText.headerTitle[currentLang];
+      document.getElementById("headerSubtitle").textContent = uiText.headerSubtitle[currentLang];
+      
+      // Tabs
+      document.getElementById("dayTabText").textContent = uiText.tabs.day[currentLang];
+      document.getElementById("weekTabText").textContent = uiText.tabs.week[currentLang];
+      document.getElementById("monthTabText").textContent = uiText.tabs.month[currentLang];
+      
+      // Footer
+      document.getElementById("modalFooterText").textContent = uiText.footer[currentLang];
+      
+      // Zodiac cards
+      for (const zodiac in zodiacData) {
+        if (document.getElementById(`${zodiac}-name`)) {
+          document.getElementById(`${zodiac}-name`).textContent = zodiacData[zodiac][currentLang].name;
+          document.getElementById(`${zodiac}-period`).textContent = zodiacData[zodiac][currentLang].period;
+        }
+      }
+    }
+
+    function updateLastUpdatedText() {
+      if (lastUpdated) {
+        const options = { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false
+        };
+        
+        const formattedDate = lastUpdated.toLocaleDateString(currentLang === 'uk' ? 'uk-UA' : 'en-US', options);
+        document.getElementById("lastUpdated").textContent = uiText.updated[currentLang] + formattedDate;
+      }
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === "uk" ? "en" : "uk";
+      document.getElementById("langToggle").textContent = currentLang === "uk" ? "EN" : "UK";
+      updateUI();
+      updateLastUpdatedText();
+    }
+
+    async function showPrediction(zodiac) {
+      const zodiacName = zodiacData[zodiac][currentLang].name;
+      
+      document.getElementById("modalZodiacName").textContent = zodiacName;
+      
+      // Reset tabs
+      document.getElementById("dayTab").classList.add("border-white", "font-medium");
+      document.getElementById("dayTab").classList.remove("text-gray-400");
+      document.getElementById("weekTab").classList.remove("border-white", "font-medium");
+      document.getElementById("weekTab").classList.add("text-gray-400");
+      document.getElementById("monthTab").classList.remove("border-white", "font-medium");
+      document.getElementById("monthTab").classList.add("text-gray-400");
+      
+      // Show loading spinners
+      document.getElementById("dayLoading").classList.remove("hidden");
+      document.getElementById("weekLoading").classList.remove("hidden");
+      document.getElementById("monthLoading").classList.remove("hidden");
+      document.getElementById("predDayText").classList.add("hidden");
+      document.getElementById("predWeekText").classList.add("hidden");
+      document.getElementById("predMonthText").classList.add("hidden");
+      
+      document.getElementById("dayPrediction").classList.remove("hidden");
+      document.getElementById("weekPrediction").classList.add("hidden");
+      document.getElementById("monthPrediction").classList.add("hidden");
+      
+      document.getElementById("predictionModal").classList.remove("hidden");
+      document.getElementById("predictionModal").classList.add("flex");
+      
+      // Load predictions
+      if (horoscopeData[zodiac]) {
+        updatePredictionText(zodiac, 'today', 'predDayText', 'dayLoading');
+        updatePredictionText(zodiac, 'week', 'predWeekText', 'weekLoading');
+        updatePredictionText(zodiac, 'month', 'predMonthText', 'monthLoading');
+      } else {
+        // If data not loaded yet, fetch it
+        await getAllHoroscopes();
+        updatePredictionText(zodiac, 'today', 'predDayText', 'dayLoading');
+        updatePredictionText(zodiac, 'week', 'predWeekText', 'weekLoading');
+        updatePredictionText(zodiac, 'month', 'predMonthText', 'monthLoading');
+      }
+    }
+
+    function updatePredictionText(zodiac, timeframe, textElementId, loadingElementId) {
+      const predictionData = horoscopeData[zodiac][timeframe];
+      
+      if (predictionData) {
+        const predictionText = predictionData.description || 
+                             getFallbackPrediction(zodiac, timeframe, currentLang);
+        
+        document.getElementById(textElementId).textContent = predictionText;
+        document.getElementById(textElementId).classList.remove("hidden");
+        document.getElementById(loadingElementId).classList.add("hidden");
+      } else {
+        document.getElementById(textElementId).textContent = 
+          currentLang === 'uk' ? 'Не вдалося завантажити прогноз' : 'Failed to load prediction';
+        document.getElementById(textElementId).classList.remove("hidden");
+        document.getElementById(loadingElementId).classList.add("hidden");
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("predictionModal").classList.add("hidden");
+      document.getElementById("predictionModal").classList.remove("flex");
+    }
+
+    function changeTab(tab) {
+      // Update tab styles
+      document.getElementById("dayTab").classList.remove("border-white", "font-medium");
+      document.getElementById("dayTab").classList.add("text-gray-400");
+      document.getElementById("weekTab").classList.remove("border-white", "font-medium");
+      document.getElementById("weekTab").classList.add("text-gray-400");
+      document.getElementById("monthTab").classList.remove("border-white", "font-medium");
+      document.getElementById("monthTab").classList.add("text-gray-400");
+      
+      document.getElementById(`${tab}Tab`).classList.add("border-white", "font-medium");
+      document.getElementById(`${tab}Tab`).classList.remove("text-gray-400");
+      
+      // Show selected content
+      document.getElementById("dayPrediction").classList.add("hidden");
+      document.getElementById("weekPrediction").classList.add("hidden");
+      document.getElementById("monthPrediction").classList.add("hidden");
+      document.getElementById(`${tab}Prediction`).classList.remove("hidden");
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target === document.getElementById("predictionModal")) {
+        closeModal();
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      updateUI();
+      await getAllHoroscopes();
+      
+      // Refresh data every 6 hours
+      setInterval(async () => {
+        await getAllHoroscopes();
+      }, 6 * 60 * 60 * 1000);
+    });
+  </script>
+</body>
+</html>
